@@ -23,20 +23,20 @@ jobs:
       - name: Build & Push the docker image
         run: | 
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker image build -t heniarmoniyem/udagram-api-feed:v1
+          docker image build --tag name: udagram-api-feed:v1
           docker push heniarmoniyem/udagram-api-feed:v1
       - name: Build & Push the docker image  
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker image build -t heniarmoniyem/udagram-api-user:v1
+          docker image build -tag name: heniarmoniyem/udagram-api-user:v1
           docker push heniarmoniyem/udagram-api-user:v1
       - name: Build & Push the docker image 
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker image build -t heniarmoniyem/udagram-frontend:v1
+          docker image build -tag name: udagram-frontend:v1
           docker push heniarmoniyem/udagram-frontend:v1
       - name: Build & Push the docker image 
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker image build -t heniarmoniyem/udagram-reverseproxy:v1
+          docker image build -tag name: udagram-reverseproxy:v1
           docker push heniarmoniyem/udagram-reverseproxy:v1
