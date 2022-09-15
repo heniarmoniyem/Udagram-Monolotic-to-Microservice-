@@ -21,22 +21,26 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build & Push docker image
+        working-directory: udagram-api-feed
         run: | 
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker image build tag udagram-api-feed udagram-api-feed/Dockerfile .
+          docker . build --file Dockerfile --tag udagram-api-feed:v1
           docker push heniarmoniyem/udagram-api-feed
-      - name: Build & Push docker image  
+      - name: Build & Push docker image 
+        working-directory: udagram-api-user
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build tag udagram-api-user udagram-api-user/Dockerfile .
+          docker build . --file Dockerfile --tag udagram-api-user:v1
           docker push heniarmoniyem/udagram-api-user
       - name: Build & Push docker image 
+        working-directory: udagram-frontend 
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build tag udagram-frontend udagram-frontend/Dockerfile .
+          docker build .--file Dockerfile --tag udagram-frontend:v1
           docker push heniarmoniyem/udagram-frontend
       - name: Build & Push docker image 
+        working-directory: udagram-reverseproxy
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build tag udagram-reverseproxy udagram-reverseproxy/Dockerfile .
+          docker build . --file Dockerfile --tag udagram-reverseproxy:v1 
           docker push heniarmoniyem/udagram-reverseproxy
