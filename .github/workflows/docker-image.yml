@@ -5,28 +5,38 @@ name: docker-image
 # Controls when the action will run. 
 on:
   # Triggers the workflow on pull request events but only for the master branch
-  pull_request_target:
-    types: [opened, reopened]
-
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+
 jobs:
-  build-container:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build the docker image
-        working-directory: udagram-api-feed
-        run: docker build . --file Dockerfile --tag udagram-api-feed:$(date +%s)
-      - name: Build the docker image
-        working-directory: udagram-api-user
-        run: docker build . --file Dockerfile --tag udagram-api-user:$(date +%s)
-      - name: Build the docker image
-        working-directory: udagram-frontend
-        run: docker build . --file Dockerfile --tag udagram-frontend:$(date +%s)
-      - name: Build the docker image
-        working-directory: udagram-reverseproxy
-        run: docker build . --file Dockerfile --tag udagram-reverseproxy:$(date +%s)
+      - name: Build & Push the docker image
+        run: | 
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
+          docker image build --tag name: udagram-api-feed:v1
+          docker push heniarmoniyem/udagram-api-feed:v1
+      - name: Build & Push the docker image  
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
+          docker image build -tag name: heniarmoniyem/udagram-api-user:v1
+          docker push heniarmoniyem/udagram-api-user:v1
+      - name: Build & Push the docker image 
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
+          docker image build -tag name: udagram-frontend:v1
+          docker push heniarmoniyem/udagram-frontend:v1
+      - name: Build & Push the docker image 
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
+          docker image build -tag name: udagram-reverseproxy:v1
+          docker push heniarmoniyem/udagram-reverseproxy:v1
