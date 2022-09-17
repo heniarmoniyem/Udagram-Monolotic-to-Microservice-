@@ -10,37 +10,50 @@ on:
   pull_request:
     branches: [master]
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # workflow_dispatch:
 
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Build & Push docker image
-        working-directory: udagram-api-feed
-        run: | 
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker . build --file Dockerfile --tag udagram-api-feed:v1
-          docker push heniarmoniyem/udagram-api-feed
-      - name: Build & Push docker image 
-        working-directory: udagram-api-user
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build . --file Dockerfile --tag udagram-api-user:v1
-          docker push heniarmoniyem/udagram-api-user
-      - name: Build & Push docker image 
-        working-directory: udagram-frontend 
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build .--file Dockerfile --tag udagram-frontend:v1
-          docker push heniarmoniyem/udagram-frontend
-      - name: Build & Push docker image 
-        working-directory: udagram-reverseproxy
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker build . --file Dockerfile --tag udagram-reverseproxy:v1 
-          docker push heniarmoniyem/udagram-reverseproxy
+    - name: Login to dockerhub
+      uses: docker/login-action@v1
+      with: 
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up Docker Builds
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push feed image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./udagram-api-feed
+        file: ./udagram-api-feed/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME}}/udagram-api-feed:v1
+    - name: Build and push User image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./udagram-api-user
+        file: ./udagram-api-user/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME}}/udagram-api-user:v1
+    - name: Build and push Frontend image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./udagram-frontend
+        file: ./udagram-frontend/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME}}/udagram-frontend:v2
+    - name: Build and push reverseproxy image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./udagram-reverseproxy
+        file: ./udagram-reverseproxy/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME}}/udagram-reverseproxy:v1
