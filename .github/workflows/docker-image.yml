@@ -24,7 +24,7 @@ jobs:
         working-directory: udagram-api-feed
         run: | 
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "heniarmoniyem" --password-stdin
-          docker . build --file Dockerfile --tag udagram-api-feed:v1
+          docker build . --file Dockerfile --tag udagram-api-feed:v1
           docker push heniarmoniyem/udagram-api-feed
       - name: Build & Push docker image 
         working-directory: udagram-api-user
