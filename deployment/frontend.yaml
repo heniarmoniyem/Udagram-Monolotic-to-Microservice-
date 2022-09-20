@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: docker.io/heniarmoniyem/udagram-frontend:v3
+          image: docker.io/heniarmoniyem/udagram-frontend:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -43,8 +43,8 @@ metadata:
 spec:
   ports:
     - name: "8080"
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: 8080
       protocol: TCP
   selector:
     service: frontend
