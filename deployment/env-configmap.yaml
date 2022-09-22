@@ -4,7 +4,8 @@ metadata:
   name: env-configmap 
 data:
  POSTGRES_DB : postgres
- AWS_BUCKET: udagram-proj3-dev
+ AWS_BUCKET: udagramo
  AWS_REGION: us-east-1
  AWS_PROFILE: default
  JWT_SECRET: testing
+ URL: http://ab959c7a67f4e4b4f9b2f053c0979631-1216826875.us-east-1.elb.amazonaws.com
