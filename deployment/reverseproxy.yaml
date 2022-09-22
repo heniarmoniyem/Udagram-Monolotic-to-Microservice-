@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: reverseproxy
-          image: docker.io/heniarmoniyem/udagram-reverseproxy:v3
+          image: docker.io/heniarmoniyem/udagram-reverseproxy:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
